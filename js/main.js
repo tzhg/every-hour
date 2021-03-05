@@ -2,9 +2,9 @@
 
 "use strict";
 
-import { transformHue } from "../../js/transformHue.js";
-import { pointerEvents } from "../../js/pointerEvents.js";
-import { shadeColour } from "../../js/shadeColour.js";
+import { transformHue } from "./transformHue.js";
+import { pointerEvents } from "./pointerEvents.js";
+import { shadeColour } from "./shadeColour.js";
 
 $(() => {
 	
@@ -1188,14 +1188,14 @@ const init = (dataCSV) => {
 
 $.ajax({
 	type: "GET",
-	url: "../data/data-csv.txt",
+	url: "./data-csv.txt",
 	dataType: "text",
 	success: init,
 	error: () => {
 		console.log("Using mangled data.")
 		$.ajax({
 			type: "GET",
-			url: "../data-csv-mangled.txt",
+			url: "./data-csv-mangled.txt",
 			dataType: "text",
 			success: init
 		});

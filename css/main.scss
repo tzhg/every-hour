@@ -135,15 +135,14 @@ $time-bar-height: 17px;
 	padding-right: 10px;
 }
 
-.footnote-row {
+.bottom-row {
 	padding-top: 30px;
 }
-
+	
 .footnote {
     display: inline-block;
-    border: solid black 1px;
-    border-radius: 5px;
     padding: 10px 12px;
+    text-align: left;
 }
 
 .question-mark-icon {
@@ -155,6 +154,7 @@ $time-bar-height: 17px;
 	border-radius: 11px;
 	background-color: $dark-grey;
 	margin-right: 5px;
+	text-align: center;
 	span {
 		position: relative;
 		top: -2px;
