@@ -1,0 +1,26 @@
+export function pointer(){
+	let touchedElem;
+	/* Clicking for mouse and touch devices */
+	function click(sel, f) {
+		$(sel).on("pointerdown", (evt) => {
+			touchedElem = evt.target;
+		});
+		$(sel).on("pointerup", (evt) => {
+			if (evt.target === touchedElem) {
+				f(evt);
+			}
+			touchedElem = "";
+		});
+	}
+
+	function hover(sel, f1, f2) {
+		$(sel)
+			.on("pointerenter", f1)
+			.on("pointerout", f2);
+	}
+
+	return {
+		click,
+		hover
+	};
+}

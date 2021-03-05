@@ -1,0 +1,102 @@
+---
+layout: default
+custom_css: css/main
+custom_js: js/every-hour
+title: Every Hour
+---
+
+<div class="tool-tip"></div>
+
+<div class="info-modal-overlay"></div>
+<div class="info-modal">
+	<div class="info-modal-content"></div>
+	<div class="close-info" aria-label="Close Information"><span class="typcn typcn-times"></span></div>
+</div>
+
+<div class="main-container eh-main-container">
+    <div class="default-card">
+        <div class="row">
+            <div class="col-sm-10 column-1">
+                <div class="eh-header-container">
+                    <div class="row">
+                        <div class="col-sm-6"></div>
+                        <div class="col-sm-6">
+                            <div class="menubar">
+                                <div class="menu-container type-container" data-cont="type">
+                                    <div class="menu-button">
+										<span class="typcn typcn-chart-pie"></span>
+									</div>
+                                    <div class="menu-content type-select">
+                                        <div class="menu-item select-option" data-type="hist">Bar chart (timeline)</div>
+                                        <div class="menu-item select-option" data-type="hourHist">Bar chart (hour)</div>
+                                        <div class="menu-item select-option" data-type="line">Line chart</div>
+                                        <div class="menu-item select-option" data-type="pie">Pie chart</div>
+                                        <div class="menu-item select-option" data-type="boxWhisk">Box chart</div>
+                                        <div class="menu-item select-option" data-type="calendar">Calendar chart</div>
+                                        <div class="menu-item select-option" data-type="timelineHour">Pixel chart</div>
+                                    </div>
+                                </div
+								><div class="menu-container period-container" data-cont="period">
+                                    <div class="menu-button">
+										<span class="typcn typcn-calendar"></span>
+									</div>
+                                    <div class="menu-content period-select">
+                                        <div class="menu-item select-option" data-period="day">Day</div>
+                                        <div class="menu-item select-option" data-period="week">Week</div>
+                                        <div class="menu-item select-option" data-period="month">Month</div>
+                                        <div class="menu-item select-option" data-period="year">Year</div>
+                                        <div class="menu-item select-option" data-period="eternity">Eternity</div>
+                                        <hr>
+                                        <div class="menu-item select-option" data-period="weekday">Weekday</div>
+                                    </div>
+                                </div
+								><div class="menu-container key-container" data-cont="key">
+									<div class="menu-button">
+										<span class="typcn typcn-key"></span>
+									</div>
+                                    <div class="menu-content key-select">
+                                        <div class="menu-item select-option" data-legend="default">Complete</div>
+                                        <div class="menu-item select-option" data-legend="simple">Simple</div>
+                                    </div>
+                                </div
+								><div class="menu-container settings-container" data-cont="settings">
+                                    <div class="menu-button">
+										<span class="typcn typcn-cog"></span>
+									</div>
+                                    <div class="menu-content">
+                                        <div class="menu-item truncate-container">
+                                            <div class="sett-button truncate">Show incomplete</div>
+                                        </div>
+                                        <div class="menu-item select-option reload">Refresh</div>
+                                        <div class="menu-item select-option info">Information</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="svg-container">
+                    <svg class="chart-svg" width="100%" height="100%" viewBox="0 0 1000 1000" preserveAspectRatio="none"></svg>
+					<div class="svg-container-shadow"></div>
+                    <span class="vert-label"></span>
+                    <span class="horiz-label"></span>
+                    <div class="vert-scale-container"></div>
+                    <div class="hor-scale-container"></div>
+                </div>
+				<div class="scroll-container">
+					<div class="scroll-button scroll-left">
+						<span class="typcn typcn-chevron-left"></span>
+					</div
+					><span class="scroll-label"></span
+					><div class="scroll-button scroll-right">
+						<span class="typcn typcn-chevron-right"></span>
+					</div>
+				</div>
+            </div>
+            <div class="col-sm-2">
+                <div class="legend-container"></div>
+            </div>
+        </div>
+		Note: The data has been altered for privacy purposes
+    </div>
+</div>

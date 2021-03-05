@@ -1,0 +1,454 @@
+---
+---
+
+@import "master";
+
+$max-chart-width: 360px;
+$chart-margin-top: 15px;
+$chart-margin-right: 25px;
+$chart-margin-bottom: 22px;
+$chart-margin-left: 45px;
+$shadow: 1.5px 1.5px 1px 0 rgba(0, 0, 0, 0.2);
+
+.column-1 {
+	max-width: $max-chart-width + $chart-margin-left + $chart-margin-right;
+	margin: auto;
+	margin-bottom: 15px;
+}
+
+.legend-button {
+    text-align: left;
+    padding-bottom: 3px;
+    width: 120px;
+    position: relative;
+    display: inline-block;
+	border-radius: $border-radius;
+}
+
+.legend-label {
+    pointer-events: none;
+    position: absolute;
+    opacity: 1;
+    bottom: 2px;
+}
+
+.legend-square {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    margin-right: 12px;
+    pointer-events: none;
+    position: relative;
+    top: 4px;
+    left: 4px;
+	border-radius: $border-radius;
+}
+
+.legend-clickable {
+    cursor: pointer;
+}
+
+.icon-col {
+    width: 20px;
+    padding: 0;
+}
+
+.eh-header-container {
+    position: relative;
+    margin: 0 $chart-margin-right (-$chart-margin-top) $chart-margin-left;
+	max-width: $max-chart-width;
+	> .row > div {
+		text-align: center;
+		padding: 0;
+	}
+	> .row {
+		margin: 0;
+	}
+}
+
+.inner-main-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 800px;
+    padding: 20px 20px 0px 20px;
+}
+
+.legend-container {
+    position: relative;
+	user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+.menubar {
+    display: inline;
+    user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+.menu-button {
+    position: relative;
+    border: none;
+    text-align: center;
+    width: 36px;
+    font-size: 24px;
+    color: $dark-grey;
+	border-radius: $border-radius $border-radius 0 0;
+	border: 0.66px solid white;
+	border-bottom: none;
+	> span {
+		pointer-events: none;
+		display: inline-block; /* Needed for Edge */
+		height: 33px;
+	}
+}
+
+.type-container .menu-button {
+    padding-left: 0;
+}
+
+.menu-container {
+	visibility: hidden;
+    display: inline-block;
+	> .menu-visible, > .menu-locked {
+		color: $theme-color-1;
+	}
+}
+
+.menu-select {
+   pointer-events: auto;
+}
+
+.menu-content {
+    display: none;
+    text-align: left;
+    position: absolute;
+	padding: (3px - 0.66px) 0 3px 0;
+    z-index: 2;
+    background-color: white;
+    white-space: nowrap;
+    left: 8px;
+    right: 8px;
+    border: 0.66px solid $dark-grey;
+    border-top: 0.66px solid white; /* Needed for Edge */
+	border-radius: 0 0 $border-radius $border-radius;
+    box-shadow:  $shadow;
+	cursor: default;
+	> .menu-item {
+		padding: 3px 8px;
+	}
+	> .select-selected {
+		background-color: $theme-color-1;
+	}
+	> hr {
+		margin: 3px 0;
+		height: 0;
+		border-top: 0.66px solid $medium-grey;
+	}
+}
+
+.menu-disabled {
+    cursor: default;
+	> .menu-button {
+		color: $medium-grey;
+	}
+}
+
+.select-selected {
+    color: white;
+}
+
+.select-disabled {
+    display: none;
+}
+
+.tool-tip {
+    display: none;
+    background-color: $dark-grey;
+    position: fixed;
+    z-index: 3;
+    color: white;
+    padding: 5px 7px;
+    text-align: center;
+    border-width: 2px !important;
+	border-radius: $border-radius;
+    pointer-events: none;
+    box-shadow:  $shadow;
+    font-size: 10px;
+}
+
+.tool-tip:after {
+	left: 0;
+	bottom: -6px;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-left-color: $dark-grey;
+	border-width: 6px;
+	margin-top: -6px;
+}
+
+.svg-container {
+	visibility: hidden;
+    position: relative;
+    margin: $chart-margin-top $chart-margin-right $chart-margin-bottom $chart-margin-left;
+    max-width: $max-chart-width;
+	border-top: solid 1.33px $dark-grey;
+	user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+}
+
+.info-modal {
+	background-color: white;
+	font-size: 10px;
+	display: none;
+	position: absolute;
+	width: 200px;
+	height: 240px;
+	top: 50%;
+	left: 50%;
+	margin: -120px 0 0 -120px;
+	border-radius: $border-radius;
+	z-index: 5;
+	border: 0.66px solid $dark-grey;
+	> .close-info {
+		font-size: 26px;
+		position: absolute;
+		top: 4px;
+		right: 4px;
+		height: 24px;
+		width: 24px;
+		color: #b54a68; /* This should match red in chart */
+		> span {
+			pointer-events: none;
+			position: relative;
+			top: -10px;
+		}
+	}
+	> .info-modal-content {
+		padding: 30px;
+		
+		/* Centres vertically*/
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+}
+	
+.info-modal-overlay {
+	display: none;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.7);
+	z-index: 4;
+	pointer-events: all;
+}
+
+.vert-scale-container > span, .hor-scale-container > span, .vert-label, .horiz-label {
+	position: absolute;
+	white-space: nowrap;
+}
+
+.pca-number {
+	display: inline-block;
+}
+
+.pca-number:after {
+	white-space: pre;
+	content: ", ";
+}
+
+.pca-number:last-child:after {
+	content: none;
+}
+
+.svg-container-shadow {
+	visibility: hidden;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	box-shadow: inset $shadow;
+	z-index: 1;
+	pointer-events: none;
+}
+
+.scroll-container {
+	margin: 0 $chart-margin-right 0 $chart-margin-left;
+	user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	visibility: hidden;
+}
+
+.scroll-label {
+    display: inline-block;
+	margin: 0 3px;
+	position: relative;
+	top: -12px;
+}
+
+.scroll-button {
+    display: inline-block;
+    position: relative;
+	top: 1px;
+    font-size: 26px;
+    opacity: 1;
+    background-color: white;
+	color: $theme-color-1;
+	width: 24px;
+	height: 24px;
+	border-radius: $border-radius;
+	> span {
+		pointer-events: none;
+		position: relative;
+		top: -10px;
+	}
+}
+
+.scroll-disabled {
+    visibility: hidden;
+}
+
+.hor-scale-container {
+	> span {
+		font-size: 10px;
+		padding-top: 5px;
+	}
+	> div {
+		position: absolute;
+		border-left: 0.66px solid $dark-grey;
+		height: 5px;
+		width: 5px;
+	}
+    position: absolute;
+    left: -1px;
+}
+
+.vert-scale-container {
+	> span {
+		font-weight: normal;
+		font-size: 10px;
+	}
+	> div {
+		position: absolute;
+		border-bottom: 0.66px solid $dark-grey;
+		height: 5px;
+		width: 5px;
+	}
+	> div:last-child {
+		border-bottom: 2px solid $dark-grey;
+	}
+    position: absolute;
+}
+
+.vert-label {
+    -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+
+.sett-button {
+    border: 0.66px solid $theme-color-1;
+    border-radius: $border-radius;
+    padding: 2px 4px;
+    display: inline-block;
+    position: relative;
+	> span {
+		pointer-events: none;
+	}
+}
+
+.checked {
+    background-color: $theme-color-1;
+	color: white;
+	cursor: pointer;
+}
+
+.sett-button-clickable:not(.checked) {
+	background-color: $theme-color-1-light-5;
+	cursor: pointer;
+}
+
+.sett-button-clickable.checked {
+	background-color: $theme-color-1-light-2;
+}
+
+.select-option-clickable {
+	background-color: $theme-color-1-light-5;
+	cursor: pointer;
+}
+
+.scroll-clickable {
+	color: $theme-color-1-light-2;
+	cursor: pointer;
+}
+
+.close-info-clickable {
+	color: #c46e86 !important;
+	cursor: pointer;
+}
+
+@media not all and (hover: none) {
+	.select-option:not(.select-selected):active, .sett-button:not(.checked):active {
+		background-color: $theme-color-1-light-4;
+		cursor: pointer;
+	}
+	
+	.scroll-button:active {
+		color: $theme-color-1-light-1;
+		cursor: pointer;
+	}
+	
+	.checked:active {
+		background-color: $theme-color-1-light-1;
+	}
+	
+	.close-info:active {
+		color: #bc5c77 !important;
+		cursor: pointer;
+	}
+}
+
+/* Small devices */
+@media (min-width: 576px) {
+    .menu-container {
+        position: relative;
+    }
+	
+	.menubar {
+		margin-right: 10px;
+	}
+	
+    .menu-content {
+        width: auto;
+        left: auto;
+		right: 0;
+        box-shadow:  $shadow;
+    }
+	
+    .eh-header-container > .row > div:last-child {
+        text-align: right;
+    }
+	
+    .legend-container {
+        text-align: left;
+    }
+	
+	.column-1 {
+		margin: 0;
+	}
+}

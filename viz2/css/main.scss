@@ -1,0 +1,239 @@
+---
+---
+
+@import "master";
+
+$content-margin-top: 60px;
+$chart-inside-margin: 10px;
+$y-axis-width: 35px;
+$x-axis-height: 52px;
+$time-bar-height: 17px;
+
+.main-container {
+	display: flex;
+	flex-flow: column nowrap;
+	max-width: 1000px;
+	font-size: 14px;
+	padding-left: 20px;
+	padding-right: 20px;
+	visibility: hidden;
+}
+
+.title-row {
+	background: white;
+	padding-top: $content-margin-top;
+	padding-right: $y-axis-width + $chart-inside-margin;
+	padding-bottom: 5px;
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+.chart-upper-row {
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+.chart-lower-row {
+	height: $x-axis-height;
+	padding-right: $y-axis-width + $chart-inside-margin - 1px;
+	white-space: nowrap;
+}
+
+.chart-main {
+	width: 100%;
+	position: relative;
+	user-select: none;
+}
+
+.x-axis-container {
+	position: relative;
+	margin-top: $chart-inside-margin;
+}
+
+.y-axis-container {
+	position: relative;
+	width: $y-axis-width;
+	border-left: 1px solid $dark-grey;
+	margin-left: $chart-inside-margin;
+	flex: none;
+}
+
+.title-container {
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: flex-start;
+	justify-content: flex-end;
+	flex: none;
+}
+
+.legend-container {
+	display: flex;
+	flex-flow: column nowrap;
+	flex: 1;
+	justify-content: flex-end;
+}
+
+.legend-row-1 {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-end;
+}
+
+.legend-row-2 {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-end;
+}
+
+.legend-row-below-1 {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+}
+
+.legend-row-below-2 {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+}
+
+.title {
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.subtitle {
+	padding-bottom: 1px;
+}
+
+.legend-button {
+    text-align: right;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    position: relative;
+	border-radius: $border-radius;
+	user-select: none;
+	> span {
+		position: relative;
+		top: 1px;
+	}
+}
+
+.legend-square {
+    display: inline-block;
+    height: 12px;
+    width: 12px;
+    margin-right: 8px;
+    pointer-events: none;
+    position: relative;
+    top: 2px;
+    left: 2px;
+}
+
+.legend-label {
+    pointer-events: none;
+	padding-right: 10px;
+}
+
+.footnote-row {
+	padding-top: 30px;
+}
+
+.footnote {
+    display: inline-block;
+    border: solid black 1px;
+    border-radius: 5px;
+    padding: 10px 12px;
+}
+
+.question-mark-icon {
+	position: relative;
+	top: 3px;
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+	border-radius: 11px;
+	background-color: $dark-grey;
+	margin-right: 5px;
+	span {
+		position: relative;
+		top: -2px;
+		color: white;
+		font-size: 16px;
+	}
+}
+
+.x-axis-tick {
+	position: absolute;
+	border-left: 1px solid $dark-grey;
+	pointer-events: none;
+	display: none;
+	top: $time-bar-height;
+	height: 4px;
+}
+
+.x-axis-label {
+	position: absolute;
+	pointer-events: none;
+	user-select: none;
+	display: none;
+}
+
+.x-axis-label-hover {
+	top: $time-bar-height;
+}
+
+.x-axis-label-block {
+}
+
+.x-axis-label-endpoint {
+	top: $time-bar-height;
+}
+
+.x-axis-block {
+	height: $time-bar-height;
+	position: absolute;
+	top: 0;
+	color: white;
+	display: none;
+	font-size: 12px;
+}
+
+.x-axis-block-separator {
+	position: absolute;
+	top: 0;
+	border-left: 1px solid white;
+	height: $time-bar-height;
+	pointer-events: none;
+	display: none;
+}
+
+.y-axis-tick {
+	position: absolute;
+	left: 0;
+	border-top: 1px solid $dark-grey;
+	width: 8px;
+}
+
+.y-axis-indicator {
+	width: 6px;
+	position: absolute;
+	left: 0;
+}
+
+.y-axis-label {
+	position: absolute;
+	left: 12px;
+}
+
+.y-axis-label-hover {
+	display: none;
+}
+
+.grid-line {
+	position: absolute;
+	width: 100%;
+	left: 0;
+	border-top: 1px solid #d9d9d9;
+	z-index: -1;
+}
