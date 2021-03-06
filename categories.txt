@@ -1,0 +1,7 @@
+i|v|f;Leisure
+c|j;Professional
+n|g|a|m;Intellectual\xa0and\xa0creative
+p;Health,\xa0duties,\xa0and\xa0productivity
+o;Social
+s;Sleep
+w|k|e|l|r;other

@@ -50,7 +50,7 @@ let typesInit = function() {
 			"truncate": truncate
 		};
 	};
-	
+
 	let sort = (arr) => {
 		const indices = arr.map((val, idx) => idx);
 
@@ -71,7 +71,7 @@ let typesInit = function() {
 
 		return sort(aves);
 	};
-	
+
 	function freq(legend, period) {
 		const freq = [];
 
@@ -94,7 +94,7 @@ let typesInit = function() {
 			}
 		} else {
 			let currentDay;
-			
+
 			currentDay = PERIODS[period].offset;
 
 			for (let i = 0; currentDay < noDays; ++i) {
@@ -117,10 +117,10 @@ let typesInit = function() {
 		}
 		return freq;
 	}
-	
+
 	function hourFreq(legend, period) {
 		const hourFreq = [];
-		
+
 		if (period === "weekday") {
 			for (let i = 0; i < DAYS_IN_WEEK; ++i) {
 				hourFreq[i] = [];
@@ -149,7 +149,7 @@ let typesInit = function() {
 
 				for (let i = 0; i < HOURS_IN_DAY; ++i) {
 					hourFreq[j][i] = Array(LEGENDS[legend].len).fill(0);
-					
+
 					for (let currentDay = PERIODS[period].start(j);
 						currentDay < PERIODS[period].start(j + 1);
 						++currentDay) {
@@ -167,29 +167,29 @@ let typesInit = function() {
 
 		return hourFreq;
 	}
-	
+
 	function pie(legend, period) {
 		let arr = [];
 		for (let i = 0; LEGENDS[legend].data[PERIODS[period].start(i)]; ++i) {
 			let aves;
-			
+
 			if (period === "eternity") {
 				aves = LEGENDS[legend].calcAverage();
 			} else if (period === "year") {
 				let end = LEGENDS[legend].data[PERIODS[period].start(i + 1) - 1] ?
 					PERIODS[period].start(i + 1) : noDays;
-					
+
 				aves = LEGENDS[legend].calcAverage(PERIODS[period].start(i), end);
 			}
-				
+
 			const indices = sort(aves).reverse();
-			
+
 			arr[i] = [aves, indices];
 		}
-		
-		return arr;	
+
+		return arr;
 	}
-	
+
 	function timelineHour(legend, period) {
 		const timelineHourArr = [];
 
@@ -213,13 +213,13 @@ let typesInit = function() {
 					}
 				}
 			}
-			
+
 			timelineHourArr.push(arrHour);
 		}
 
 		return timelineHourArr;
 	};
-	
+
 	function catFreq(legend, period) {
 		function quartIdx(n) {
 			const arr = [];
@@ -289,9 +289,9 @@ let typesInit = function() {
 		for (let i = 0; i < LEGENDS[legend].len; ++i) {
 			const OUTLIER = false;
 			let x, j;
-			
+
 			catFreq[i].sort((a, b) => a - b);
-			
+
 			quartIdx(catFreq[i].length).forEach((idx, j) => {
 				if (Number.isInteger(idx)) {
 					quarts[i][j] = catFreq[i][idx];
@@ -299,15 +299,15 @@ let typesInit = function() {
 					quarts[i][j] = (catFreq[i][Math.ceil(idx)] + catFreq[i][Math.floor(idx)]) / 2;
 				}
 			});
-			
+
 			if (OUTLIER) {
 				x = 1.5 * (quarts[i][3] - quarts[i][1]);
-				
+
 				for (j = 0; catFreq[i][j] < quarts[i][1] - x; ++j) {
 					quarts[i].push(catFreq[i][j]);
 				}
 				quarts[i][0] = catFreq[i][j];
-				
+
 				for (j = catFreq[i].length - 1; catFreq[i][j] > quarts[i][3] + x; --j) {
 					quarts[i].push(catFreq[i][j]);
 				}
@@ -413,7 +413,7 @@ let typesInit = function() {
 
 	return types;
 };
-	
+
 let legendsInit = function(dataCSV) {
 	let legends = {
 		"default": {
@@ -498,7 +498,7 @@ let legendsInit = function(dataCSV) {
 			"maxLabelWidth": 51
 		}
 	};
-	
+
 	/* Calculates average between indices x and y (excluding y) */
 	function calcAverage(legend, x, y) {
 		const arr = new Array(legend.len).fill(0);
@@ -521,7 +521,7 @@ let legendsInit = function(dataCSV) {
 
 	$.each(legends, (id, obj) => {
 		obj.data = dataCSV;
-		
+
 		/* Replaces letters by numbers */
 		obj.cats.forEach((cat, idx2) => {
 			const reg = new RegExp(cat.id.join("|"), "g");
@@ -564,7 +564,7 @@ let legendsInit = function(dataCSV) {
 		}
 
 		obj.len = obj.cats.length;
-		
+
 		/* x and y slice the data */
 		obj.calcAverage = (x, y) => calcAverage(obj, x, y);
 	});
@@ -664,7 +664,7 @@ function formatDate(days) {
 function periodInit() {
 	/* Calculates if a year is a leap year. Does not work for years like 2100 etc. */
 	let leap = (year) => !(year % 4);
-	
+
 	let pObj = {
 		"week": {
 			"name": "Week",
@@ -720,7 +720,7 @@ function periodInit() {
 			"start": (year) => year * 365 + (Math.floor(year / 4))
 		}
 	};
-	
+
 	$.each(pObj, (id, obj) => {
 		obj.offset = obj.offset || 0;
 		obj.notTrunc = !!obj.notTrunc;
@@ -729,9 +729,9 @@ function periodInit() {
 			let currentDay;
 
 			currentDay = obj.offset;
-			
+
 			let defData = LEGENDS.default.data;
-			
+
 			obj.unfinished = false;
 
 			/* Finds the number of time periods in the data */
@@ -746,7 +746,7 @@ function periodInit() {
 					defData[currentDay + obj.days(i) - 1].length < HOURS_IN_DAY) {
 
 					obj.unfinished = true;
-					
+
 					/* The agument of this function is a bool */
 					obj.len = function(trunc = truncate.get()) {
 						return trunc ? i : i + 1;
@@ -759,14 +759,14 @@ function periodInit() {
 			}
 		}
 	});
-	
+
 	return pObj;
 };
 
 const FADE = 0.25;
 
 const graphics = (() => {
-	
+
 	const svg = elem("chart-svg");
 	const toolTip = elem("tool-tip");
 	const NS = "http://www.w3.org/2000/svg";
@@ -779,15 +779,15 @@ const graphics = (() => {
 
 	const DOT_R = 6;
 	const DOT_PADDING = 14;
-	
+
 	/* Padding (in pixels) on the left and right sides of line chart */
 	const LINE_PAD = 10;
 
 	/* Box and whiskers */
 	const SHADE = 0.2;
-	
+
 	const GRADIENT_LIMIT = 10;
-	
+
 	let yLimit;
 
 	function format(x) {
@@ -801,7 +801,7 @@ const graphics = (() => {
 
 		return `${hourText}${divider}${minText}${noneText}`;
 	}
-	
+
 	/* An upper bound for the y-axis value. Preferably divisible by 4. */
 	function setYLimit() {
 		if (type.is("line") || type.is("boxWhisk")) {
@@ -855,13 +855,13 @@ const graphics = (() => {
 		if (shape === "hist") {
 			return function(evt) {
 				let d = evt.target.dataset;
-				
+
 				let cat = Number(d.cat);
-				
+
 				if (!type.is("timelineHour")) {
 					svg.appendChild(cover);
 					$(".cover").attr("opacity", COVER_OPACITY);
-					
+
 					svg.appendChild(evt.target);
 
 					if (locked) {
@@ -945,7 +945,7 @@ const graphics = (() => {
 
 				svg.appendChild(cover);
 				$(".cover").attr("opacity", COVER_OPACITY);
-				
+
 				svg.appendChild(evt.target.parentElement);
 
 				let arr = evt.target.dataset.arr.split(",").map((val) => `${format(Number(val))}${period.is("day") ? "" : "/day"}`);
@@ -963,10 +963,10 @@ const graphics = (() => {
 		} else if (shape === "seg") {
 			return function(evt) {
 				let cat = Number(evt.target.dataset.cat);
-				
+
 				svg.appendChild(cover);
 				$(".cover").attr("opacity", COVER_OPACITY);
-				
+
 				svg.appendChild(evt.target);
 
 				let svgBox = elem("svg-container").getBoundingClientRect();
@@ -1011,10 +1011,10 @@ const graphics = (() => {
 		if (shape === "hist") {
 			return function(evt) {
 				comparisonLine.remove();
-				
+
 				$(".overcover").remove();
 				$(".cover").attr("opacity", 0);
-				
+
 				$(toolTip).hide();
 			};
 		} else if (shape === "dot") {
@@ -1094,7 +1094,7 @@ const graphics = (() => {
 	function drawLineChart(cat, freqArr) {
 		const line = document.createElementNS(NS, "polyline");
 		const coords = [];
-		
+
 		/* Converting from pixels to units of svg */
 		let line_pad = SVG_SPACE * LINE_PAD / elem("svg-container").getBoundingClientRect().width;
 
@@ -1102,10 +1102,10 @@ const graphics = (() => {
 			if (t !== period.info().len()) { /* Truncates if necessary */
 				let len = freqArr[t].reduce((a, b) => a + b, 0);
 				let max_Y = yLimit * len / HOURS_IN_DAY;
-				
+
 				let x = line_pad + t * (SVG_SPACE - 2 * line_pad) / (period.info().len() - 1);
 				let y = SVG_SPACE - arr[cat] * SVG_SPACE / max_Y;
-				
+
 				const dot = document.createElementNS(NS, "circle");
 				dot.setAttribute("cx", String(x));
 				dot.setAttribute("cy", String(y));
@@ -1152,7 +1152,7 @@ const graphics = (() => {
 	function drawBoxWhiskers(pos, cat, arr, visCats) {
 		const WIDTH = 0.5;
 		const PADDING = 14;
-		
+
 		const shape = document.createElementNS(NS, "g");
 		shape.setAttribute("class", "box-whisk-whisk");
 		shape.setAttribute("stroke-width", "3");
@@ -1172,7 +1172,7 @@ const graphics = (() => {
 		boxUpper.setAttribute("data-cat", String(cat));
 
 		shape.appendChild(boxUpper);
-		
+
 		const boxUpper2 = document.createElementNS(NS, "rect");
 		boxUpper2.setAttribute("x", String((0.5 + pos - WIDTH * 0.5) * SVG_SPACE / visCats));
 		boxUpper2.setAttribute("y", String(5 + SVG_SPACE - arr[3] * SVG_SPACE / yLimit));
@@ -1183,7 +1183,7 @@ const graphics = (() => {
 		boxUpper2.setAttribute("data-cat", String(cat));
 
 		shape.appendChild(boxUpper2);
-		
+
 		const lineMax = document.createElementNS(NS, "line");
 		lineMax.setAttribute("x1", String((0.5 + pos - WIDTH * 0.5) * SVG_SPACE / visCats));
 		lineMax.setAttribute("y1", String(SVG_SPACE - arr[4] * SVG_SPACE / yLimit));
@@ -1193,10 +1193,10 @@ const graphics = (() => {
 		lineMax.setAttribute("class", `max-${cat}`);
 
 		shape.appendChild(lineMax);
-		
+
 		let min = arr[0];
 		let max = arr[4];
-		
+
 		for (let i = 5; i < arr.length; ++i) {
 			const circle = document.createElementNS(NS, "circle");
 			circle.setAttribute("cx", String((0.5 + pos) * SVG_SPACE / visCats));
@@ -1205,14 +1205,14 @@ const graphics = (() => {
 			circle.setAttribute("fill", "transparent");
 
 			shape.appendChild(circle);
-			
+
 			if (arr[i] > max) {
 				max = arr[i];
 			} else if (arr[i] < min) {
 				min = arr[i];
 			}
 		}
-		
+
 		const whiskerMax = document.createElementNS(NS, "line");
 		whiskerMax.setAttribute("x1", String((0.5 + pos) * SVG_SPACE / visCats));
 		whiskerMax.setAttribute("y1", String(SVG_SPACE - arr[3] * SVG_SPACE / yLimit));
@@ -1221,7 +1221,7 @@ const graphics = (() => {
 		whiskerMax.setAttribute("stroke", legend.info().cats[cat].colour);
 
 		shape.appendChild(whiskerMax);
-		
+
 		/* Bottom half */
 		if (arr[2] > 0) {
 			const boxLower = document.createElementNS(NS, "rect");
@@ -1235,7 +1235,7 @@ const graphics = (() => {
 			boxLower.setAttribute("data-cat", String(cat));
 
 			shape.appendChild(boxLower);
-			
+
 			const boxLower2 = document.createElementNS(NS, "rect");
 			boxLower2.setAttribute("x", String((0.5 + pos - WIDTH * 0.5) * SVG_SPACE / visCats));
 			boxLower2.setAttribute("y", String(SVG_SPACE - arr[2] * SVG_SPACE / yLimit));
@@ -1246,23 +1246,23 @@ const graphics = (() => {
 			boxLower2.setAttribute("data-cat", String(cat));
 
 			shape.appendChild(boxLower2);
-			
+
 			const lineMin = document.createElementNS(NS, "line");
 			lineMin.setAttribute("x1", String((0.5 + pos - WIDTH * 0.5) * SVG_SPACE / visCats));
 			lineMin.setAttribute("y1", String(SVG_SPACE - arr[0] * SVG_SPACE / yLimit));
 			lineMin.setAttribute("x2", String((0.5 + pos + WIDTH * 0.5) * SVG_SPACE / visCats));
 			lineMin.setAttribute("y2", String(SVG_SPACE - arr[0] * SVG_SPACE / yLimit));
 			lineMin.setAttribute("stroke", shadeColour(legend.info().cats[cat].colour, -SHADE));
-			
+
 			shape.appendChild(lineMin);
-			
+
 			const lineMedian = document.createElementNS(NS, "line");
 			lineMedian.setAttribute("x1", String((0.5 + pos - WIDTH * 0.5) * SVG_SPACE / visCats));
 			lineMedian.setAttribute("y1", String(SVG_SPACE - arr[2] * SVG_SPACE / yLimit));
 			lineMedian.setAttribute("x2", String((0.5 + pos + WIDTH * 0.5) * SVG_SPACE / visCats));
 			lineMedian.setAttribute("y2", String(SVG_SPACE - arr[2] * SVG_SPACE / yLimit));
 			lineMedian.setAttribute("stroke", LIGHT_GREY);
-			
+
 			shape.appendChild(lineMedian);
 
 			const whiskerMin = document.createElementNS(NS, "line");
@@ -1271,7 +1271,7 @@ const graphics = (() => {
 			whiskerMin.setAttribute("x2", String((0.5 + pos) * SVG_SPACE / visCats));
 			whiskerMin.setAttribute("y2", String(SVG_SPACE - arr[1] * SVG_SPACE / yLimit));
 			whiskerMin.setAttribute("stroke", shadeColour(legend.info().cats[cat].colour, -SHADE));
-			
+
 			shape.appendChild(whiskerMin);
 		}
 
@@ -1292,12 +1292,12 @@ const graphics = (() => {
 	}
 
 	let calHelper = [];
-	
+
 	const PAD_LR = 4;
 	const PAD_TB = 4;
 	const GRID_SIZE = 54 + 2 * PAD_TB;
 	const CAL_SIZE = SVG_SPACE / GRID_SIZE;
-	
+
 	const MAX_SHADE = 0.5;
 
 	/* n = -1 means the day hasn't happened yet */
@@ -1307,9 +1307,9 @@ const graphics = (() => {
 		/* Gradient with minimum = white, maximum ~ MAX_SHADE */
 		const activeColour = shadeColour(legend.info().cats[cat].colour, ((1 + MAX_SHADE) * n - max - MAX_SHADE * min) / (min - max));
 		const inactiveColour = "rgba(0, 0, 0, 0)";
-		
+
 		let spaceInBetween = (GRID_SIZE - 2 * PAD_LR - 7 * PERIODS.year.len(false)) / (PERIODS.year.len(false) - 1);
-	
+
 		let x = (PAD_LR + (year * (DAYS_IN_WEEK + spaceInBetween)) + dayOfWeek) * CAL_SIZE;
 		let y = (PAD_TB + week) * CAL_SIZE;
 
@@ -1356,10 +1356,10 @@ const graphics = (() => {
 
 		if (dayOfWeek === 0 && !Number.isInteger(calHelper[m][4])) {
 			calHelper[m][4] = dayOfMonth;
-		}	
+		}
 	}
 
-	function calendarMonthDesign(year, lastMonth) {	
+	function calendarMonthDesign(year, lastMonth) {
 		let spaceInBetween = (GRID_SIZE - 2 * PAD_LR - 7 * PERIODS.year.len(false)) / (PERIODS.year.len(false) - 1);
 		const text = document.createElementNS(NS, "text");
 		text.setAttribute("x", String((3.5 + PAD_LR + (year * (DAYS_IN_WEEK + spaceInBetween))) * CAL_SIZE));
@@ -1370,7 +1370,7 @@ const graphics = (() => {
 		text.textContent = String(START_DATE[0] + year);
 		svg.appendChild(text);
 		/* Draws all month borders */
-		for (let i = 0; i < lastMonth + 1; ++i) {		
+		for (let i = 0; i < lastMonth + 1; ++i) {
 			const border = document.createElementNS(NS, "path");
 			border.setAttribute("stroke", DARK_GREY);
 			border.setAttribute("stroke-width", 2);
@@ -1462,11 +1462,11 @@ const graphics = (() => {
 			for (let i = 0; i < scaleTicks + 1; ++i) {
 				/* Maximum height of horizontal axis labels. Includes some padding. */
 				const MAX_SPAN = 20;
-				
+
 				if (scaleTicks >= svgBox.height / MAX_SPAN && i % 2) {
 					continue;
 				}
-				
+
 				if ((scaleTicks / 2) >= svgBox.height / MAX_SPAN && (i / 2) % 2) {
 					continue;
 				}
@@ -1492,7 +1492,7 @@ const graphics = (() => {
 
 				tick.style.bottom = `${i * (svgBox.height - 2) / scaleTicks - 1 - (i === scaleTicks ? 1 : 0)}px`;
 				tick.style.left = "-5px";
-				
+
 				/* We need to line up the last tick with the chart border */
 				if (i === scaleTicks) {
 					/* 0.66 is substracted to account for the chart border */
@@ -1550,7 +1550,7 @@ const graphics = (() => {
 					span[i].innerText = `${period.is("year") ? "" : MONTHS[date.getMonth()].name.slice(0, 3)+ " "}${date.getFullYear()}`;
 
 					span[i].style.bottom = `-${span[i].offsetHeight}px`;
-					
+
 					let padding = type.is("line") ? LINE_PAD : 0;
 					let x = padding + i * (svgBox.width - 2 * padding) / (scaleTicks - 1);
 					span[i].style.left = `${x - span[i].offsetWidth / 2}px`;
@@ -1580,7 +1580,7 @@ const graphics = (() => {
 		horLabel.style.left = `${Math.round(svgBox.width / 2 - horLabel.offsetWidth / 2)}px`;
 
 		elem("svg-container-shadow").style.boxShadow = type.info().noAxes ? "inset 0 2.5px 1px -1px rgba(0, 0, 0, 0.2)" : "inset 1.5px 1.5px 1px 0 rgba(0, 0, 0, 0.2)";
-		
+
 		svgContainer.style.borderLeft = type.info().noAxes ? "none" : `0.66px solid ${DARK_GREY}`;
 		svgContainer.style.borderBottom = type.info().noAxes ? "none" : `0.66px solid ${DARK_GREY}`;
 
@@ -1615,7 +1615,7 @@ const graphics = (() => {
 			draw();
 		}
 	}
-	
+
 	/* https://stackoverflow.com/a/2450976/6536036 */
 	function shuffle(array) {
 		var currentIndex = array.length, temporaryValue, randomIndex;
@@ -1670,7 +1670,7 @@ const graphics = (() => {
 				for (let j = 0; j < HOURS_IN_DAY; ++j) {
 					let arr = chartData[i][j];
 					let indices = shuffle([...Array(arr.length).keys()]);
-					
+
 					arr.forEach((cat, day) => {
 						drawHistElem(
 							1,
@@ -1700,8 +1700,8 @@ const graphics = (() => {
 					let counter;
 
 					counter = 0;
-					
-					let totalY = chartData[j][i].reduce((a, b) => a + b, 0); 
+
+					let totalY = chartData[j][i].reduce((a, b) => a + b, 0);
 
 					chartData[j][i].forEach((n, cat) => {
 						if (n) {
@@ -1716,9 +1716,9 @@ const graphics = (() => {
 					let counter;
 
 					counter = 0;
-					
-					let totalY = arr.reduce((a, b) => a + b, 0); 
-					
+
+					let totalY = arr.reduce((a, b) => a + b, 0);
+
 					arr.forEach((n, cat) => {
 						if (n) {
 							drawHistElem(n, counter, i, cat, HOURS_IN_DAY, totalY, 1);
@@ -1759,15 +1759,15 @@ const graphics = (() => {
 					max = chartData[i][selected.get()];
 				}
 			}
-			
+
 			for (let year = 0; year < PERIODS.year.len(false); ++year) {
 				let m = 0;
 				let dayOfMonth = 0;
-				
+
 				let leap = !((year + 1) % 4);
 
 				let week = 0;
-				
+
 				for (let m = 0; m < MONTHS_IN_YEAR; ++m) {
 					calHelper[m] = new Array(5);
 				}
@@ -1779,12 +1779,12 @@ const graphics = (() => {
 					if (i !== PERIODS.year.start(year) && getWeekDay(i) === 0) {
 						++week;
 					}
-						
+
 					if (dayOfMonth === MONTHS[m].len(leap)) {
 						dayOfMonth = 0;
 						m = m + 1 % MONTHS_IN_YEAR;
 					}
-					
+
 					drawCalendar(
 						year,
 						m,
@@ -1803,13 +1803,13 @@ const graphics = (() => {
 			}
 			pointer.hover(".calSquare", mouseEnter("calSquare"), mouseLeave("calSquare"));
 		}
-		
+
 		drawAxisLabels();
 		$(toolTip).hide();
-		
+
 		/* Used for setting opacity of the chart */
 		cover = document.createElementNS(NS, "rect");
-		
+
 		cover.setAttribute("x", 0);
 		cover.setAttribute("y", 0);
 		cover.setAttribute("width", SVG_SPACE);
@@ -1818,7 +1818,7 @@ const graphics = (() => {
 		cover.setAttribute("opacity", 0);
 		cover.setAttribute("class", "cover");
 		cover.setAttribute("pointer-events", "none");
-		
+
 		svg.appendChild(cover);
 	}
 
@@ -1834,7 +1834,7 @@ const graphics = (() => {
 let locked;
 
 const chart = (() => {
-	
+
 	/* Draws the chart, selecting a category if necessary */
 	function drawChart() {
 		graphics.draw();
@@ -1843,7 +1843,7 @@ const chart = (() => {
 			isolateVisual();
 		}
 	}
-	
+
 	/* This "visual" function deal with the legend visual effects */
 	function isolateVisual() {
 		let cat = selected.get();
@@ -1853,7 +1853,7 @@ const chart = (() => {
 		});
 		$(`.legend-button[data-cat = ${cat}] .legend-square`).css("background-color", LIGHT_GREY);
 	}
-	
+
 	function highlightVisual(cat) {
 		$(`.legend-button[data-cat = ${cat}]`).css({
 			"background-color": shadeColour(legend.info().cats[cat].colour, 0.75),
@@ -1872,7 +1872,7 @@ const chart = (() => {
 
 	function legendClick(evt) {
 		let cat = Number(evt.target.dataset.cat);
-		
+
 		/* If the chart cannot be isolated */
 		if (type.info().notIsolate) {
 			return;
@@ -1883,25 +1883,25 @@ const chart = (() => {
 			if (type.info().onlyIsolate) {
 				return;
 			}
-			
+
 			if(!(matchMedia("(hover: none)").matches)) {
 				highlightVisual(cat);
 			} else {
 				normalVisual(cat);
 			}
-			
+
 			graphics.unisolateChart(cat);
 
 			locked = false;
 		} else {
-			
+
 			/* If the chart is isolated on a different category */
 			if (locked) {
 				normalVisual(selected.get());
-				
+
 				graphics.unisolateChart(selected.get());
 			}
-			
+
 			selected.set(cat);
 			isolateVisual();
 			locked = true;
@@ -1912,7 +1912,7 @@ const chart = (() => {
 	/* Creates sorted legend */
 	function createLegend() {
 		elem("legend-container").innerHTML = "";
-			
+
 		let indices = type.info().sort();
 
 		if (!indices) {
@@ -1956,11 +1956,11 @@ const chart = (() => {
 				evt.preventDefault();
 			});
 		}*/
-		
+
 		pointer.hover(".legend-button", legendEnter, legendLeave);
-		
+
 		pointer.click(".legend-button", legendClick);
-		
+
 		if (type.info().notIsolate) {
 			$(".legend-button").removeClass("legend-clickable");
 		} else {
@@ -1973,11 +1973,11 @@ const chart = (() => {
 
 	function legendEnter(evt) {
 		let cat = Number(evt.target.dataset.cat);
-		
+
 		if (type.info().notIsolate) {
 			return;
 		}
-		
+
 		if (locked && selected.get() === cat) {
 			$(`.legend-button[data-cat = ${cat}]`).css("background-color", shadeColour(legend.info().cats[cat].colour, 0.2));
 		} else {
@@ -1987,11 +1987,11 @@ const chart = (() => {
 
 	function legendLeave(evt) {
 		let cat = Number(evt.target.dataset.cat);
-		
+
 		if (type.info().notIsolate) {
 			return;
 		}
-		
+
 		if (locked && selected.get() === cat) {
 			$(`.legend-button[data-cat = ${cat}]`).css("background-color", legend.info().cats[cat].colour);
 		} else {
@@ -2037,7 +2037,7 @@ const chart = (() => {
 			legendCont.style.top = "0";
 		}
 	}
-	
+
 	/* x = 1 or -1 */
 	function scrollStep(x) {
 		scroll.set(scroll.get() + x);
@@ -2053,9 +2053,9 @@ const chart = (() => {
 		}
 
 		elem("scroll-label").innerText = type.info().scroll().label(scroll.get());
-		
+
 		createLegend();
-		
+
 		drawChart();
 	}
 
@@ -2067,7 +2067,7 @@ const chart = (() => {
 				/* Unlocks the chart */
 				locked = false;
 				selected.set("");
-				
+
 				if (type.info().onlyIsolate) {
 					$(`.legend-button[data-cat = 0]`).css({
 						"background-color": legend.info().cats[0].colour,
@@ -2077,11 +2077,11 @@ const chart = (() => {
 					locked = true;
 					selected.set(0);
 				}
-				
+
 				createLegend();
 				legendLayout();
 			}
-			
+
 			graphics.setYLimit();
 
 			$(".key-select div").removeClass("select-selected");
@@ -2090,7 +2090,7 @@ const chart = (() => {
 
 		truncate.change = (bool) => {
 			truncate.set(bool);
-			
+
 			showHideScroll();
 
 			if (bool) {
@@ -2147,16 +2147,16 @@ const chart = (() => {
 				locked = true;
 				selected.set(0);
 			}
-			
+
 			createLegend();
-		
+
 			showHideScroll();
 			showHideSettings();
 			graphics.setYLimit();
 			if (type.info().infoText) {
 				type.info().infoText.genModal(elem("info-modal-content"));
 			}
-		
+
 
 			$(".type-select div").removeClass("select-selected");
 			$(`.type-select div[data-type = ${id}]`).addClass("select-selected");
@@ -2181,7 +2181,7 @@ const chart = (() => {
 		elem("truncate-container").style.display = type.info().notTrunc || period.info().notTrunc ? "none" : "block";
 		elem("reload").style.display = !type.info().reload ? "none" : "block";
 		elem("info").style.display = !type.info().infoText ? "none" : "block";
-		
+
 		if ((type.info().notTrunc || period.info().notTrunc) && !type.info().reload && !type.info().infoText) {
 			$(".settings-container").addClass("menu-disabled");
 		} else {
@@ -2191,7 +2191,7 @@ const chart = (() => {
 
 	function init() {
 		settingsInit();
-		
+
 		legend.change(defaultChart[0]);
 		type.change(defaultChart[1]);
 		period.change(defaultChart[2]);
@@ -2206,11 +2206,11 @@ const chart = (() => {
 				type.change(evt.target.dataset.type);
 
 				drawChart();
-				
+
 				menu.exitMenu();
 			}
 		});
-		
+
 		pointer.hover(".type-select div", (evt) => {
 			if (!$(evt.target).hasClass("select-selected")) {
 				$(evt.target).addClass("select-option-clickable");
@@ -2224,11 +2224,11 @@ const chart = (() => {
 				period.change(evt.target.dataset.period);
 
 				drawChart();
-				
+
 				menu.exitMenu();
 			}
 		});
-		
+
 		pointer.hover(".period-select div", (evt) => {
 			if (!$(evt.target).hasClass("select-selected")) {
 				$(evt.target).addClass("select-option-clickable");
@@ -2242,7 +2242,7 @@ const chart = (() => {
 				scrollStep(-1);
 			}
 		});
-		
+
 		pointer.hover(".scroll-left", (evt) => {
 			if (!$(evt.target).hasClass("scroll-disabled")) {
 				$(evt.target).addClass("scroll-clickable");
@@ -2256,7 +2256,7 @@ const chart = (() => {
 				scrollStep(1);
 			}
 		});
-		
+
 		pointer.hover(".scroll-right", (evt) => {
 			if (!$(evt.target).hasClass("scroll-disabled")) {
 				$(evt.target).addClass("scroll-clickable");
@@ -2269,10 +2269,10 @@ const chart = (() => {
 			truncate.change($(evt.target).hasClass("checked"));
 
 			drawChart();
-			
+
 			menu.exitMenu();
 		});
-		
+
 		pointer.hover(".truncate", (evt) => {
 			$(evt.target).addClass("sett-button-clickable");
 		}, (evt) => {
@@ -2284,11 +2284,11 @@ const chart = (() => {
 				legend.change(evt.target.dataset.legend);
 
 				drawChart();
-				
+
 				menu.exitMenu();
 			}
 		});
-		
+
 		pointer.hover(".key-select div", (evt) => {
 			if (!$(evt.target).hasClass("select-selected")) {
 				$(evt.target).addClass("select-option-clickable");
@@ -2296,37 +2296,37 @@ const chart = (() => {
 		}, (evt) => {
 			$(evt.target).removeClass("select-option-clickable");
 		});
-		
+
 		pointer.click(".info", (evt) => {
 			$(".info-modal").show();
 			$(".info-modal-overlay").show();
-			
+
 			menu.exitMenu();
 		});
-		
+
 		pointer.hover(".info", (evt) => {
 			$(evt.target).addClass("select-option-clickable");
 		}, (evt) => {
 			$(evt.target).removeClass("select-option-clickable");
 		});
-		
+
 		pointer.click(".close-info", (evt) => {
 			$(".info-modal").hide();
 			$(".info-modal-overlay").hide();
 		});
-		
+
 		pointer.hover(".close-info", (evt) => {
 			$(evt.target).addClass("close-info-clickable");
 		}, (evt) => {
 			$(evt.target).removeClass("close-info-clickable");
 		});
-		
+
 		pointer.click(".reload", (evt) => {
 			drawChart();
-			
+
 			menu.exitMenu();
 		});
-		
+
 		pointer.hover(".reload", (evt) => {
 			$(evt.target).addClass("select-option-clickable");
 		}, (evt) => {
@@ -2359,12 +2359,12 @@ let menu = (() => {
 		$(document).unbind("mousemove");
 		safe = false;
 	}
-	
+
 	function enterMenu(container, hover=true) {
 		safe = true;
 		$(container.children[1]).show();
 		$(container.children[0]).addClass("menu-visible");
-		
+
 		if (hover) {
 			$(document).mousemove(safeZone(container));
 		} else {
@@ -2377,7 +2377,7 @@ let menu = (() => {
 			if (lock) {
 				return;
 			}
-			
+
 			let buttonRect = container.children[0].getBoundingClientRect();
 
 			let inButton = evt2.clientY + 1 >= buttonRect.top
@@ -2403,7 +2403,7 @@ let menu = (() => {
 		if ($(container).hasClass("menu-disabled") || lock) {
 			return;
 		}
-		
+
 		if (safe) {
 			inOtherButton = evt;
 		} else {
@@ -2419,7 +2419,7 @@ let menu = (() => {
 					return;
 				}
 				let newlock;
-				
+
 				if (lock) {
 					exitMenu();
 					$(".menu-button").removeClass("menu-locked");
@@ -2429,13 +2429,13 @@ let menu = (() => {
 					enterMenu(evt.target.parentElement, false);
 					newlock = evt.target.parentElement.dataset.cont;
 				}
-				
+
 				lock = newlock;
 			});
 		} else {
 			$(".menu-button").mousemove(hoverButton);
 		}
-		
+
 		$("body").click((evt) => {
 			if (lock && !$(evt.target).parents(`.${lock}-container`).length) {
 				exitMenu();
@@ -2504,7 +2504,7 @@ function cacheCharts() {
 				});
 			});
 		});
-		
+
 		return () => obj[type.get()][legend.get()][period.get()];
 	})();
 }
@@ -2513,33 +2513,33 @@ let init = function(dataCSV) {
 	TYPES = typesInit();
 	LEGENDS = legendsInit(dataCSV);
 	PERIODS = periodInit();
-	
+
 	createSettings();
-	
+
 	/* Create default chart */
 	getData = () => TYPES[defaultChart[1]].dataFun(defaultChart[0], defaultChart[2]);
 	chart();
-	
+
 	/* Prevents elements appearing before chart is created */
 	$(".menu-container").css("visibility", "visible");
 	$(".svg-container").css("visibility", "visible");
 	$(".svg-container-shadow").css("visibility", "visible");
 
 	menu.menuEvents();
-	
+
 	cacheCharts();
 };
 
 $.ajax({
 	type: "GET",
-	url: "../data/data-csv.txt",
+	url: "./data-csv.txt",
 	dataType: "text",
 	success: init,
 	error: () => {
 		console.log("Using mangled data.")
 		$.ajax({
 			type: "GET",
-			url: "../data-csv-mangled.txt",
+			url: "./data-csv-mangled.txt",
 			dataType: "text",
 			success: init
 		});

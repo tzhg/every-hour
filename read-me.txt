@@ -1,0 +1,21 @@
+# data.txt
+
+Consists of:
+1. The date of the first day in YYYY-MM-DD format
+2. Multiple lines of data
+
+The data consists of comma separated values.
+Each value corresponds to an hour in the local time zone, which may be associated with zero or more activities.
+Activites are denoted with a specific character (see categories-info.txt).
+"_" is for hours with 0 activities (due to moving through time zones etc.)
+"+" is used to join activities for hours with multiple activities (due to moving through time zones etc.)
+
+# analyse-data.py
+
+Run to take the data from data.txt and:
+    * convert activities to categories using the mapping in categories.txt
+    * count the occurrence of each category in each day
+    * smooth
+    * normalise each day to sum to 1
+    * apply cumulative sum (in reverse)
+The output is ready to be used by js/main.js.

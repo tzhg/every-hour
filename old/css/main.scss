@@ -284,6 +284,10 @@ $shadow: 1.5px 1.5px 1px 0 rgba(0, 0, 0, 0.2);
 	pointer-events: none;
 }
 
+.footnote {
+	margin-top: 15px;
+}
+
 .scroll-container {
 	margin: 0 $chart-margin-right 0 $chart-margin-left;
 	user-select: none;
